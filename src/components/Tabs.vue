@@ -58,6 +58,7 @@ ul {
   li {
     margin-right: 40px;
     font-size: 25px;
+    font-family: 'Syne Mono', monospace;
   }
 
   .nav-item {
@@ -71,5 +72,13 @@ ul {
       color: blue;
     }
   }
+}
+
+@media only screen and (max-width: 576px) {
+    ul {
+        li {
+            font-size: 15px;
+        }
+    }
 }
 </style>

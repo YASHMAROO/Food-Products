@@ -2,7 +2,7 @@
   <div class="container-fluid navbar-sec">
     <nav class="navbar fixed-top navbar-inverse navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="/">
-        <span class="part1"><span class="highlighted">FOOD-</span>PRODUCTS<br></span>
+        <span class="part1"><span class="highlighted">FOOD-</span>PROD<br></span>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-links" aria-controls="navbar-links" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon" />

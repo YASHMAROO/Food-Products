@@ -9,7 +9,7 @@
                                 <div class="col-sm-10 col-md-6 col-lg- col-xl-4 mb-5" v-for="(fd,index) in food.foodArr" :key="index">
                                     <div class="card">
                                         <img
-                                            class="card-img-top p-3"
+                                            class="card-img-top p-3 card-image"
                                             height="250px"
                                             :src="fd.food.image"
                                         >
@@ -74,21 +74,51 @@
                             <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">X</button>
                         </div>
                         <div class="modal-body">
-                            <img
+                            <div :id="'foodCarousel'+food.id" class="carousel slide" data-ride="carousel" data-interval="1000">
+
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li
+                                    v-for="(item, index) in food.imgCar"
+                                    :key="index"
+                                    :data-target="'#foodCarousel'+food.id"
+                                    :data-slide-to="index"
+                                    :class="[index == 0 ? 'active' : '']"
+                                    />
+                                </ol>
+
+                                <!-- Carousel items -->
+                                <div class="carousel-inner">
+                                    <div
+                                        v-for="(item, index) in food.imgCar"
+                                        :key="index"
+                                        :class="[index == 0 ? 'active' : '', 'carousel-item']"
+                                    >  
+                                        <img :src="item" class="responsive">
+                                    </div>              
+                                </div>
+
+                                <a class="carousel-control-prev" :href="'#foodCarousel'+food.id" data-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>                               
+                                </a>                              
+                                <a class="carousel-control-next" :href="'#foodCarousel'+food.id" data-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </a>
+                            </div>
+                            <!-- <img
                                 :src="food.image"
                                 class="modal-image responsive"
-                            >
+                            > -->
                             
                             <h3 class="price"><i class="fas fa-rupee-sign"></i> {{ food.price }} </h3>
 
                             <h3 class="text-center pt-2 food-name">
                                 {{ food.name }}
                             </h3>
-                            <div class="pt-3 food-description"><span style="color:green;">Intro : </span>{{ food.description }}</div>
-                            <div class="food-description"><span style="color:red;">Ingred : </span> {{ food.ingredients }} </div>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="#" v-on:click="addFav(fd.food,fd.id)" class="btn modal-fav" tooltip="Add to fav"><i class="far fa-bookmark"></i></a>
+                            <div class="pt-3 food-description intro"><span style="color:green;">Intro : </span>{{ food.description }}</div>
+                            <div class="food-description ing"><span style="color:red;">Ingred : </span> {{ food.ingredients }} </div>
+                            <div class="food-description"><span style="color: blue" class="review-head">Reviews:</span></div>
+                            <div v-for="(review,index) in food.reviews" :key="index" class="food-description review">{{ index+1 }} : {{ review }}</div>
                         </div>
                     </div>
                 </div>
@@ -228,8 +258,7 @@ export default {
 
 .modal {
     z-index: 20000;
-    padding-top: 2%;
-    height: 100vh;
+    height: 100vh !important;
 }
 
 .price {
@@ -242,13 +271,14 @@ export default {
     font-family: 'Dancing Script', cursive;
     font-weight: 900;
     font-size: 4vh;
+    text-decoration: underline;
 }
 
 .food-description {
     text-align: center;
     font-size: 2vh;
     font-family: 'Syne Mono', monospace;
-    color: blueviolet;
+    color: royalblue;
 }
 
 .responsive {
@@ -265,10 +295,46 @@ export default {
     box-shadow: none !important;
 }
 
+.intro {
+    border-bottom: 2px solid black;
+}
+
+.ing {
+    border-bottom: 2px solid black;
+}
+
+.review-head {
+    font-size: 2.5vh;
+    text-decoration: underline;
+}
+
+.review {
+    font-size: 2.2vh;
+    border-bottom: 2px dashed black;
+}
+
 @media only screen and (max-width: 776px) {
     .modal {
         padding-top: 0;
         height: 100vh;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .card-image {
+        height: 200px !important;
+    }
+    .price {
+        font-size: 3vh;
+    }
+    .modal {
+        height: 99vh !important;
+        padding-top: 2%;
+    }
+
+    .modal-body {
+        height: 87vh;
+        overflow-y: auto;
     }
 }
 </style>
