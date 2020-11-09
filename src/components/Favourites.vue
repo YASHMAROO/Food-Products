@@ -34,10 +34,41 @@
                             <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">X</button>
                         </div>
                         <div class="modal-body">
-                            <img
+                            <div :id="'foodCarousel'+food.id" class="carousel slide" data-ride="carousel" data-interval="1000">
+
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li
+                                    v-for="(item, index) in food.food.imgCar"
+                                    :key="index"
+                                    :data-target="'#foodCarousel'+food.id"
+                                    :data-slide-to="index"
+                                    :class="[index == 0 ? 'active' : '']"
+                                    />
+                                </ol>
+
+                                <!-- Carousel items -->
+                                <div class="carousel-inner">
+                                    <div
+                                        v-for="(item, index) in food.food.imgCar"
+                                        :key="index"
+                                        :class="[index == 0 ? 'active' : '', 'carousel-item']"
+                                    >  
+                                        <img :src="item" class="responsive">
+                                    </div>              
+                                </div>
+
+                                <a class="carousel-control-prev" :href="'#foodCarousel'+food.id" data-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>                               
+                                </a>                              
+                                <a class="carousel-control-next" :href="'#foodCarousel'+food.id" data-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </a>
+                            </div>
+                            <!-- <img
                                 :src="food.food.image"
                                 class="modal-image responsive"
-                            >
+                            > -->
                             
                             <h3 class="price"><i class="fas fa-rupee-sign"></i> {{ food.food.price }} </h3>
 
