@@ -34,41 +34,46 @@
 </template>
 
 <script>
-import db from '@/fb'
-import firebase from 'firebase'
+import db from "@/fb";
+import firebase from "firebase";
 
 export default {
-  name: 'NavBar',
-    data() {
-        return {
-            isLoggedIn: false,
-            currentUser: false,
-            userName: ''
-         }
-    },
-    created() {
-        db.collection('users').doc(firebase.auth().currentUser.uid).get().then(doc => {
-            this.foodArr = doc.data().favFood;
-            this.userName = doc.data().userName
-            console.log(this.userName);
-        });
-        if(firebase.auth().currentUser) {
-            this.isLoggedIn = true;
-            this.currentUser = firebase.auth().currentUser.user.email;
-        }
-    },
-    methods : {
-        logout: function() {
-            firebase.auth().signOut().then(() => {
-                this.$router.go({path: this.$router.path});
-            });
-        }
+  name: "NavBar",
+  data() {
+    return {
+      isLoggedIn: false,
+      currentUser: false,
+      userName: ""
+    };
+  },
+  created() {
+    db.collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then(doc => {
+        this.foodArr = doc.data().favFood;
+        this.userName = doc.data().userName;
+        console.log(this.userName);
+      });
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+      this.currentUser = firebase.auth().currentUser.user.email;
     }
-}
+  },
+  methods: {
+    logout: function() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.go({ path: this.$router.path });
+        });
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-
 .navbar-sec {
   padding: 0;
   position: absolute;
@@ -85,14 +90,14 @@ export default {
       font-size: 2rem;
     }
     .part2 {
-      font-size:0.8rem;
+      font-size: 0.8rem;
       font-weight: 700;
       color: #9c9c9c;
       letter-spacing: 0.4rem;
     }
 
     .highlighted {
-      color: red
+      color: red;
     }
   }
 
@@ -105,9 +110,8 @@ export default {
     cursor: pointer;
 
     &:hover {
-      color: red
+      color: red;
     }
   }
 }
-
 </style>

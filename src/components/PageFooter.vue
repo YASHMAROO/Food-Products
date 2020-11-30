@@ -1,8 +1,8 @@
 <template>
   <section id="footer">
-    <div class="container p-0">
+    <div class="footer container p-0 pt-4">
       <div class="row ">
-        <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
           <ul class="list-unstyled list-inline social text-center">
             <li class="list-inline-item">
               <a href="https://www.facebook.com/yash.maroo" target="_blank"><i class="fab fa-facebook-f" /></a>

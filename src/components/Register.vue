@@ -23,7 +23,10 @@
                     <label for="image">Choose Image File</label>
                     <input type="file" class="form-control form-control-lg" id="image" accept="image/*" @change="onFilePicked"/>
                 </div>
-                <button v-on:click="register" type="submit" class="btn btn-dark btn-lg btn-block mt-5">Register</button>
+                <button v-on:click="register" type="submit" class="btn btn-success btn-lg btn-block mt-5">
+                    <div v-if="loading" class="spinner-border"></div>
+                    <span v-if="!loading">Regsiter</span>
+                </button>
             </form>
         </div>
     </div>
@@ -41,12 +44,15 @@ export default {
             userName: '',
             imgUrl: '',
             image: null,
+            loading: false
         };
     },
     methods : {
         register : function(e) {
+            this.loading = true
             let imageUrl1;
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(user => {
+                this.loading = false
                 alert(`Account created for ${user.user.email}`);
                 firebase.storage().ref('users/' + user.user.uid + '/profile.jpg').put(this.image).then(() => {
                     console.log('successfully uploaded');
@@ -90,6 +96,10 @@ export default {
 </script>
 
 <style scoped>
+#footer {
+    display: none;
+}
+
 .card {
     background-color: aquamarine;
 }

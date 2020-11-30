@@ -1,5 +1,5 @@
 <template>
-    <section class="container-fluid">
+    <section class="container-fluid mb-5">
         <h1 class="text-center">Favourites</h1>
         <div class="container mb-5">
             <div class="row pt-4 pb-4 flex-wrap justify-content-ceter">
@@ -117,6 +117,9 @@ export default {
                 db.collection('users').doc(firebase.auth().currentUser.uid).update({                
                     favFood: this.foodArr
                 });
+                db.collection('foods').doc(id).update({
+                    fav: true
+                })
                 alert(`${food.name} removed from the favourites`) 
             });
         }
@@ -125,6 +128,10 @@ export default {
 </script>
 
 <style scoped>
+#footer {
+    display: none;
+}
+
 .fd-name {
     font-family: 'Goldman', cursive;
     font-size: 3vh;

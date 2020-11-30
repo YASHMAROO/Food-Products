@@ -1,66 +1,123 @@
 <template>
     <section class="container-fluid">
-        <Tabs>
-            <div v-for="(food,index) in foodChin" :key="index">
-                <Tab :name="food.name" selected="true">
-                    <div class="container food-container mb-5">
-                        <div class="card bg-light">
-                            <div class="row p-5 flex-wrap justify-content-center">
-                                <div class="col-sm-10 col-md-6 col-lg- col-xl-4 mb-5" v-for="(fd,index) in food.foodArr" :key="index">
-                                    <div class="card">
-                                        <img
-                                            class="card-img-top p-3 card-image"
-                                            height="250px"
-                                            :src="fd.food.image"
-                                        >
-                                        <div class="card-body">
-                                            <h4 class="card-title text-center fd-name">{{ fd.food.name }}</h4>
-                                        </div>
-                                        <div v-if="currentUser" class="card-footer text-muted">
-                                            <a href="#" v-on:click="addFav(fd.food,fd.id)" class="btn card-fav" tooltip="Add to fav"><i class="far fa-bookmark"></i></a>
-                                            <a href="#" class="btn read-more" data-toggle="modal" :data-target="'#foodModal'+fd.id">Read More</a>
-                                        </div>
-                                        <div v-if="!currentUser" class="card-footer text-muted text-center">
-                                            <a href="#" class="btn read-more1" data-toggle="modal" :data-target="'#foodModal'+fd.id">Read More</a>
-                                        </div>
-                                    </div>
+        <article>
+            <header class="tabs">
+                <ul>
+                    <li>
+                        <a class="nav-item" @click="Chinese" :class="{'is-active': chinActive}">Chinese</a>
+                    </li>
+                    <li>
+                        <a class="nav-item" @click="Continental" :class="{'is-active': conActive}">Continental</a>
+                    </li>
+                    <li>
+                        <a class="nav-item" @click="Indian" :class="{'is-active': indActive}">Indian</a>
+                    </li>
+                    <li>
+                        <a class="nav-item" @click="Thai" :class="{'is-active': thaiActive}">Thai</a>
+                    </li>
+                </ul>
+            </header>
+        </article>
+
+        <div class="container food-container mb-5" v-show="chinActive">
+            <div class="card bg-light">
+                <div class="row p-5 flex-wrap justify-content-center">
+                    <div class="col-sm-10 col-md-6 col-lg- col-xl-4 mb-5" v-for="(fd,index) in foodChin" :key="index">
+                        <div class="card">
+                            <img
+                                class="card-img-top p-3 card-image"
+                                height="250px"
+                                :src="fd.image"
+                            >
+                            <div class="card-body">
+                                <h4 class="card-title text-center fd-name">{{ fd.name }}</h4>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <a href="#" v-show="fd.fav" v-on:click="addFav(fd,fd.id)" class="btn card-fav" :id="'book'+fd.id"><i class="far fa-bookmark"></i></a>
+                                <a href="#" v-show="!fd.fav" v-on:click="removeFav(fd,fd.id)" class="btn card-fav" :id="'bookmarked'+fd.id"><i class="fas fa-bookmark"></i></a>
+                                <a href="#" class="btn read-more" data-toggle="modal" :data-target="'#foodModal'+fd.id">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button v-if="moreChin" @click="viewMoreChin('Chinese')" class="btn btn-primary">View More</button>
+            </div>
+        </div>
+
+            <div class="container food-container mb-5" v-show="conActive">
+                <div class="card bg-light">
+                    <div class="row p-5 flex-wrap justify-content-center">
+                        <div class="col-sm-10 col-md-6 col-lg- col-xl-4 mb-5" v-for="(fd,index) in foodCon" :key="index">
+                            <div class="card">
+                                <img
+                                    class="card-img-top p-3"
+                                    height="250px"
+                                    :src="fd.image"
+                                >
+                                <div class="card-body">
+                                    <h4 class="card-title text-center fd-name">{{ fd.name }}</h4>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <a href="#" v-show="fd.fav" v-on:click="addFav(fd,fd.id)" class="btn card-fav" :id="'book'+fd.id"><i class="far fa-bookmark"></i></a>
+                                    <a href="#" v-show="!fd.fav" v-on:click="removeFav(fd,fd.id)" class="btn card-fav" :id="'bookmarked'+fd.id"><i class="fas fa-bookmark"></i></a>
+                                    <a href="#" class="btn read-more" data-toggle="modal" :data-target="'#foodModal'+fd.id">Read More</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </Tab>
+                    <button v-if="moreCon" @click="viewMoreCont('Continental')" class="btn btn-primary">View More</button>
+                </div>
             </div>
 
-            <div v-for="(food,index) in foodsCat" :key="index">
-                <Tab :name="food.name">
-                    <div class="container food-container mb-5">
-                        <div class="card bg-light">
-                            <div class="row p-5 flex-wrap justify-content-center">
-                                <div class="col-sm-10 col-md-6 col-lg- col-xl-4 mb-5" v-for="(fd,index) in food.foodArr" :key="index">
-                                    <div class="card">
-                                        <img
-                                            class="card-img-top p-3"
-                                            height="250px"
-                                            :src="fd.food.image"
-                                        >
-                                        <div class="card-body">
-                                            <h4 class="card-title text-center fd-name">{{ fd.food.name }}</h4>
-                                        </div>
-                                        <div v-if="currentUser" class="card-footer text-muted">
-                                            <a href="#" v-on:click="addFav(fd.food,fd.id)" class="btn card-fav" tooltip="Add to fav"><i class="far fa-bookmark"></i></a>
-                                            <a href="#" class="btn read-more" data-toggle="modal" :data-target="'#foodModal'+fd.id">Read More</a>
-                                        </div>
-                                        <div v-if="!currentUser" class="card-footer text-muted text-center">
-                                            <a href="#" class="btn read-more1" data-toggle="modal" :data-target="'#foodModal'+fd.id">Read More</a>
-                                        </div>
-                                    </div>
+            <div class="container food-container mb-5" v-show="indActive">
+                <div class="card bg-light">
+                    <div class="row p-5 flex-wrap justify-content-center">
+                        <div class="col-sm-10 col-md-6 col-lg- col-xl-4 mb-5" v-for="(fd,index) in foodInd" :key="index">
+                            <div class="card">
+                                <img
+                                    class="card-img-top p-3"
+                                    height="250px"
+                                    :src="fd.image"
+                                >
+                                <div class="card-body">
+                                    <h4 class="card-title text-center fd-name">{{ fd.name }}</h4>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <a href="#" v-show="fd.fav" v-on:click="addFav(fd,fd.id)" class="btn card-fav" :id="'book'+fd.id"><i class="far fa-bookmark"></i></a>
+                                    <a href="#" v-show="!fd.fav" v-on:click="removeFav(fd,fd.id)" class="btn card-fav" :id="'bookmarked'+fd.id"><i class="fas fa-bookmark"></i></a>
+                                    <a href="#" class="btn read-more" data-toggle="modal" :data-target="'#foodModal'+fd.id">Read More</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </Tab>
-            </div>
-        </Tabs>
+                    <button v-if="moreInd" @click="viewMoreInd('Indian')" class="btn btn-primary">View More</button>
+                </div>
+            </div>   
+
+            <div class="container food-container mb-5" v-show="thaiActive">
+                <div class="card bg-light">
+                    <div class="row p-5 flex-wrap justify-content-center">
+                        <div class="col-sm-10 col-md-6 col-lg- col-xl-4 mb-5" v-for="(fd,index) in foodThai" :key="index">
+                            <div class="card">
+                                <img
+                                    class="card-img-top p-3"
+                                    height="250px"
+                                    :src="fd.image"
+                                >
+                                <div class="card-body">
+                                    <h4 class="card-title text-center fd-name">{{ fd.name }}</h4>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <a href="#" v-show="fd.fav" v-on:click="addFav(fd,fd.id)" class="btn card-fav" tooltip="Add to fav" :id="'book'+fd.id"><i class="far fa-bookmark"></i></a>
+                                    <a href="#" v-show="!fd.fav" v-on:click="removeFav(fd,fd.id)" class="btn card-fav" :id="'bookmarked'+fd.id"><i class="fas fa-bookmark"></i></a>
+                                    <a href="#" class="btn read-more" data-toggle="modal" :data-target="'#foodModal'+fd.id">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button v-if="moreThai" @click="viewMoreThai('Thai')" class="btn btn-primary">View More</button>
+                </div>
+            </div>    
 
         <div
         v-for="(food, index) in foods"
@@ -75,17 +132,6 @@
                         </div>
                         <div class="modal-body">
                             <div :id="'foodCarousel'+food.id" class="carousel slide" data-ride="carousel" data-interval="1000">
-
-                                <!-- Indicators -->
-                                <ol class="carousel-indicators">
-                                    <li
-                                    v-for="(item, index) in food.imgCar"
-                                    :key="index"
-                                    :data-target="'#foodCarousel'+food.id"
-                                    :data-slide-to="index"
-                                    :class="[index == 0 ? 'active' : '']"
-                                    />
-                                </ol>
 
                                 <!-- Carousel items -->
                                 <div class="carousel-inner">
@@ -105,10 +151,6 @@
                                     <span class="carousel-control-next-icon"></span>
                                 </a>
                             </div>
-                            <!-- <img
-                                :src="food.image"
-                                class="modal-image responsive"
-                            > -->
                             
                             <h3 class="price"><i class="fas fa-rupee-sign"></i> {{ food.price }} </h3>
 
@@ -124,64 +166,95 @@
                 </div>
             </div>
         </div>
-
     </section>
 </template>
 
 <script>
 import db from '@/fb';
 import firebase from 'firebase'
-import Tab from './Tab'
-import Tabs from './Tabs'
 
 export default {
     data() {
         return {
             foods: [],
-            foodChin: [{name: "Chinese" , foodArr: []}],
-            foodsCat: [{name: "Continental" , foodArr: []},
-                {name: "Indian" , foodArr: []},
-                {name: "Thai" , foodArr: []}],
-            currentUser:false,
+            foodChin: [],
+            foodCon: [],
+            foodInd: [],
+            foodThai: [],
             foodArr: [],
-            selected: true
+            i: 1,
+            j:1,
+            l:1,
+            k:1,
+            moreChin: false,
+            moreCon: false,
+            moreInd: false,
+            moreThai: false,
+            chinActive: true,
+            indActive: false,
+            conActive: false,
+            thaiActive: false,
+            fav: true
         }
     },
-    components: {
-        Tab,
-        Tabs
-    },
     created() {
-        this.currentUser = firebase.auth().currentUser
+        this.chinActive = true
+        this.indActive = this.conActive = this.thaiActive = false
+        let i=0;
+
         db.collection('foods').onSnapshot(res => {
             let changes = res.docChanges();
             changes.forEach(change => {
                 if(change.type === 'added') {
-                    this.categorise(change.doc.data(),change.doc.id)
+                    db.collection('foods').doc(change.doc.id).update({
+                        fav: true
+                    })
+                }
+            })
+        })
+
+        db.collection('foods').onSnapshot(res => {
+            let changes = res.docChanges();
+            changes.forEach(change => {
+                if(change.type === 'added') {
                     this.foods.push({
                         ...change.doc.data(),
                         id:change.doc.id
+                    })
+                    db.collection('users').doc(firebase.auth().currentUser.uid).get().then(doc => {
+                        doc.data().favFood.forEach(food => {
+                            if(food.id === change.doc.id) {
+                                db.collection('foods').doc(food.id).update({
+                                    fav:false
+                                })
+                                return ;
+                            } 
+                        })
+                        db.collection('foods').where("title","==","Chinese").get().then(querySnapshot => {
+                            querySnapshot.forEach(doc => {
+                                if(i==3) {
+                                    this.moreChin = true;
+                                    return;
+                                } else {
+                                    this.foodChin.push({
+                                        ...doc.data(),
+                                        id:doc.id
+                                    })
+                                    i=i+1;
+                                }
+                            })
+                        })
                     })
                 }
             })
         })
     },
     methods: {
-        categorise (food,id) {
-            if(food.title === "Chinese") {
-                this.foodChin[0].foodArr.push({food,id})
-            } else if(food.title === "Continental") {
-                this.foodsCat[0].foodArr.push({food,id})
-                // this.selected = false
-            } else if(food.title === "Indian") {
-                this.foodsCat[1].foodArr.push({food,id})
-                // this.selected = false
-            } else if(food.title === "Thai") {
-                this.foodsCat[2].foodArr.push({food,id})
-                // this.selected = false
-            }
-        },
         addFav(food,id) {
+            var id1 = "book" + id;
+            var id2 = "bookmarked" + id;
+            document.getElementById(id1).style.display = "none"
+            document.getElementById(id2).style.display = "inline-block"
             alert(`${food.name} added to favourites`)
             let fav = {
                 food: food,
@@ -193,15 +266,262 @@ export default {
                 this.foodArr.push(fav);
                 db.collection('users').doc(firebase.auth().currentUser.uid).update({                
                     favFood: this.foodArr
-                }); 
+                });
+                db.collection('foods').doc(id).update({
+                    fav: false
+                })
             });       
+        },
+        removeFav(food,id) {
+            let ind;
+            var id1 = "book" + id;
+            var id2 = "bookmarked" + id;
+            document.getElementById(id1).style.display = "inline-block"
+            document.getElementById(id2).style.display = "none"
+            db.collection('users').doc(firebase.auth().currentUser.uid).get().then(doc => {
+                this.foodArr = doc.data().favFood;
+                for(let i=0; i < this.foodArr.length; i++) {
+                    if(id === this.foodArr[i].id) {
+                        ind=i;
+                        break;
+                    }
+                }
+                this.foodArr.splice(ind, 1)
+                db.collection('users').doc(firebase.auth().currentUser.uid).update({                
+                    favFood: this.foodArr
+                });
+                db.collection('foods').doc(id).update({
+                    fav: true
+                })
+                alert(`${food.name} removed from the favourites`) 
+            });
+        },
+        viewMoreChin(name) {
+            this.j = this.k = this.l = 1
+            var j=0;
+            this.i+=1;
+            var temp=this.i
+            db.collection('foods').where("title","==",name).get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(j==3*this.i) {
+                        this.moreChin = true
+                        return;
+                    } else if(j>=3*(temp-1) && j<3*temp){
+                        this.moreChin = false
+                        this.foodChin.push({
+                        ...doc.data(),
+                        id:doc.id
+                    })
+                    }
+                    j=j+1;
+                })
+            })
+        },
+        viewMoreCont(name) {
+            this.i = this.k = this.l =1
+            var j=0;
+            this.j+=1;
+            var temp=this.j
+            db.collection('foods').where("title","==",name).get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(j==3*this.j) {
+                        this.moreCon = true
+                        return;
+                    } else if(j>=3*(temp-1) && j<3*temp){
+                        this.moreCon = false
+                        this.foodCon.push({
+                        ...doc.data(),
+                        id:doc.id
+                    })
+                    }
+                    j=j+1;
+                })
+            })
+        },
+        viewMoreInd(name) {
+            this.i = this.j = this.l = 1
+            var j=0;
+            this.k+=1;
+            var temp=this.k
+            db.collection('foods').where("title","==",name).get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(j==3*this.k) {
+                        this.moreInd = true
+                        return;
+                    } else if(j>=3*(temp-1) && j<3*temp){
+                        this.moreInd = false
+                        this.foodInd.push({
+                        ...doc.data(),
+                        id:doc.id
+                    })
+                    }
+                    j=j+1;
+                })
+            })
+        },
+        viewMoreThai(name) {
+            this.j = this.i = this.k = 1
+            var j=0;
+            this.l+=1;
+            var temp=this.l
+            db.collection('foods').where("title","==",name).get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(j==3*this.l) {
+                        this.moreThai = true
+                        return;
+                    } else if(j>=3*(temp-1) && j<3*temp){
+                        this.moreThai = false
+                        this.foodThai.push({
+                        ...doc.data(),
+                        id:doc.id
+                    })
+                    }
+                    j=j+1;
+                })
+            })
+        },
+        Chinese() {
+            this.j = this.k = this.l = 1
+            this.chinActive = true
+            this.indActive = this.conActive = this.thaiActive = this.moreChin = false
+            this.foodChin.length = 0
+            let i=0;
+            db.collection('foods').where("title","==","Chinese").get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(i==3) {
+                        this.moreChin = true;
+                        return;
+                    } else {
+                        this.foodChin.push({
+                            ...doc.data(),
+                            id:doc.id
+                        })
+                        i=i+1;
+                    }
+                })
+            })
+        },
+        Continental() {
+            this.i = this.k = this.l =1
+            this.conActive = true
+            this.indActive = this.chinActive = this.thaiActive = this.moreCon = false
+            this.foodCon.length = 0            
+            let j=0;
+            db.collection('foods').where("title","==","Continental").get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(j==3) {
+                        this.moreCon = true
+                        return;
+                    } else {
+                        this.foodCon.push({
+                            ...doc.data(),
+                            id:doc.id
+                        })
+                        j=j+1;
+                    }
+                })
+            })
+        },
+        Indian() {
+            this.i = this.j = this.l = 1
+            this.indActive = true
+            this.conActive = this.chinActive = this.thaiActive = this.moreInd = false
+            this.foodInd.length = 0
+            let k=0;
+            db.collection('foods').where("title","==","Indian").get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(k==3) {
+                        this.moreInd = true
+                        return;
+                    } else {
+                        this.foodInd.push({
+                            ...doc.data(),
+                            id:doc.id
+                        })
+                        k=k+1;
+                    }
+                })
+            })
+        },
+        Thai() {
+            this.j = this.i = this.k = 1
+            this.thaiActive = true
+            this.conActive = this.chinActive = this.indActive = this.moreThai = false
+            this.foodThai.length = 0
+            let l=0;
+            db.collection('foods').where("title","==","Thai").get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(l==3) {
+                        this.moreThai = true
+                        return;
+                    } else {
+                        this.foodThai.push({
+                            ...doc.data(),
+                            id:doc.id
+                        })
+                        l=l+1;
+                    }
+                })
+            })
+        },
+        favAdded(id) {
+            db.collection('users').doc(firebase.auth().currentUser.uid).get().then(doc => {
+                doc.data().favFood.forEach(food => {
+                    if(food.id === id)
+                    return true
+                })
+            })
         }
+
     }
     
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.tabs {
+  border-bottom: thick double black;
+  margin: 0 10px;
+}
+
+.tab-details {
+  padding: 10px;
+}
+
+ul {
+  display: flex;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+
+  li {
+    margin-right: 40px;
+    font-size: 25px;
+    font-family: 'Syne Mono', monospace;
+  }
+
+  .nav-item {
+    cursor: pointer;
+
+    &:hover {
+      color: red;
+    }
+
+    &.is-active {
+      color: blue;
+    }
+  }
+}
+
+@media only screen and (max-width: 576px) {
+    ul {
+        li {
+          margin-right: 20px;
+          font-size: 14px;
+        }
+    }
+}
+
 .food-container {
     margin-top: 10vh;
 }

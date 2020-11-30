@@ -1,5 +1,5 @@
 <template>
-  <section id="profile" class="flex-wrap justify-content-center">
+  <section id="profile mb-5" class="flex-wrap justify-content-center">
     <div class="container bg-light profile-container">
         <img :src="imageUrl" class="center pt-5">
         <br>
@@ -62,9 +62,14 @@ export default {
 </script>
 
 <style scoped>
+#footer {
+    display: none;
+}
+
 .profile-container {
     margin-top: 15vh !important; 
     border: thick double #321ace;
+    margin-bottom: 15vh;
 }
 
 .center {
