@@ -53,12 +53,11 @@ export default {
       .then(doc => {
         this.foodArr = doc.data().favFood;
         this.userName = doc.data().userName;
-        console.log(this.userName);
+        if (firebase.auth().currentUser) {
+          this.isLoggedIn = true;
+          this.currentUser = firebase.auth().currentUser.user.email;
+        }
       });
-    if (firebase.auth().currentUser) {
-      this.isLoggedIn = true;
-      this.currentUser = firebase.auth().currentUser.user.email;
-    }
   },
   methods: {
     logout: function() {

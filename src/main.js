@@ -7,6 +7,7 @@ import './fb'
 
 Vue.config.productionTip = false
 
+require('dotenv').config()
 Vue.use(Vuetify)
 
 let app;
